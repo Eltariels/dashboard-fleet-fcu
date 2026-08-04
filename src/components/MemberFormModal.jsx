@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { DIVISIONS } from '../divisions.js';
 import { manufacturerLabel } from '../manufacturers.js';
+import { BRANCH_ROLES } from '../roles.js';
 import { api } from '../api/client.js';
 
 function toList(str) {
@@ -15,6 +16,7 @@ export default function MemberFormModal({ member, onSave, onClose }) {
   const [competences, setCompetences] = useState((member?.competences || []).join(', '));
   const [vaisseaux, setVaisseaux] = useState(member?.vaisseaux || []);
   const [ships, setShips] = useState([]);
+  const [roles, setRoles] = useState(member?.roles || []);
   const [commentaire, setCommentaire] = useState(member?.commentaire || '');
   const [divisionActuelle, setDivisionActuelle] = useState(member?.divisionActuelle || '');
   const [divisionSouhaitee, setDivisionSouhaitee] = useState(member?.divisionSouhaitee || '');
@@ -27,6 +29,10 @@ export default function MemberFormModal({ member, onSave, onClose }) {
 
   function toggleShip(nom) {
     setVaisseaux((prev) => (prev.includes(nom) ? prev.filter((v) => v !== nom) : [...prev, nom]));
+  }
+
+  function toggleRole(code) {
+    setRoles((prev) => (prev.includes(code) ? prev.filter((r) => r !== code) : [...prev, code]));
   }
 
   async function handleSubmit(e) {
@@ -42,6 +48,7 @@ export default function MemberFormModal({ member, onSave, onClose }) {
         pseudo: pseudo.trim(),
         competences: toList(competences),
         vaisseaux,
+        roles,
         commentaire: commentaire.trim(),
         divisionActuelle: divisionActuelle || null,
         divisionSouhaitee: divisionSouhaitee || null,
@@ -66,6 +73,18 @@ export default function MemberFormModal({ member, onSave, onClose }) {
           Competences (separees par des virgules)
           <input value={competences} onChange={(e) => setCompetences(e.target.value)} placeholder="pilote, gunner, medic" />
         </label>
+
+        <div className="ship-checklist-field">
+          <span className="member-field-label">Role au sein de la branche</span>
+          <div className="role-checklist">
+            {BRANCH_ROLES.map((r) => (
+              <label key={r.code} className="ship-checklist-row">
+                <input type="checkbox" checked={roles.includes(r.code)} onChange={() => toggleRole(r.code)} />
+                {r.label}
+              </label>
+            ))}
+          </div>
+        </div>
 
         <div className="ship-checklist-field">
           <span className="member-field-label">Vaisseaux possedes</span>

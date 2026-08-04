@@ -20,6 +20,7 @@ const ACTION_LABELS = {
   CREATE_SHIP: 'Ajout vaisseau',
   UPDATE_SHIP: 'Modification vaisseau',
   DELETE_SHIP: 'Suppression vaisseau',
+  UPDATE_SETTINGS: 'Modification reglages',
 };
 
 export default function AdminLogsPage() {

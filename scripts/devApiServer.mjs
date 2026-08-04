@@ -15,6 +15,7 @@ const routes = [
   { method: 'ANY', pattern: '/api/users', module: '../api/users/index.js' },
   { method: 'GET', pattern: '/api/logs', module: '../api/logs/index.js' },
   { method: 'ANY', pattern: '/api/ships', module: '../api/ships/index.js' },
+  { method: 'ANY', pattern: '/api/settings', module: '../api/settings/index.js' },
 ];
 
 const compiled = await Promise.all(

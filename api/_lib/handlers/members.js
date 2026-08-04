@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         return;
       }
 
-      const { pseudo, competences, commentaire, vaisseaux, divisionActuelle, divisionSouhaitee } = req.body || {};
+      const { pseudo, competences, commentaire, vaisseaux, roles, divisionActuelle, divisionSouhaitee } = req.body || {};
       if (!pseudo || !pseudo.trim()) {
         res.status(400).json({ error: 'Le pseudo est requis' });
         return;
@@ -36,6 +36,7 @@ export default async function handler(req, res) {
         competences: competences || [],
         commentaire: commentaire || '',
         vaisseaux: vaisseaux || [],
+        roles: roles || [],
         divisionActuelle: divisionActuelle || null,
         divisionSouhaitee: divisionSouhaitee || null,
       });
@@ -73,12 +74,13 @@ export default async function handler(req, res) {
     }
 
     const before = { divisionActuelle: member.divisionActuelle, pseudo: member.pseudo };
-    const { pseudo, competences, commentaire, vaisseaux, divisionActuelle, divisionSouhaitee } = req.body || {};
+    const { pseudo, competences, commentaire, vaisseaux, roles, divisionActuelle, divisionSouhaitee } = req.body || {};
 
     if (pseudo !== undefined) member.pseudo = pseudo.trim();
     if (competences !== undefined) member.competences = competences;
     if (commentaire !== undefined) member.commentaire = commentaire;
     if (vaisseaux !== undefined) member.vaisseaux = vaisseaux;
+    if (roles !== undefined) member.roles = roles;
     if (divisionActuelle !== undefined) member.divisionActuelle = divisionActuelle;
     if (divisionSouhaitee !== undefined) member.divisionSouhaitee = divisionSouhaitee;
 

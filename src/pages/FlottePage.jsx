@@ -8,6 +8,7 @@ import FleetRecap from '../components/FleetRecap.jsx';
 import ShipCard from '../components/ShipCard.jsx';
 import ShipFormModal from '../components/ShipFormModal.jsx';
 import ConfirmDialog from '../components/ConfirmDialog.jsx';
+import { DEFAULT_ROLE_COLORS } from '../roles.js';
 
 export default function FlottePage() {
   const { user } = useAuth();
@@ -16,6 +17,7 @@ export default function FlottePage() {
   const [members, setMembers] = useState([]);
   const [divisions, setDivisions] = useState([]);
   const [ships, setShips] = useState([]);
+  const [roleColors, setRoleColors] = useState(DEFAULT_ROLE_COLORS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
 
@@ -28,11 +30,12 @@ export default function FlottePage() {
   }
 
   useEffect(() => {
-    Promise.all([api.get('/members'), api.get('/divisions'), api.get('/ships')])
-      .then(([m, d, s]) => {
+    Promise.all([api.get('/members'), api.get('/divisions'), api.get('/ships'), api.get('/settings')])
+      .then(([m, d, s, settings]) => {
         setMembers(m);
         setDivisions(d);
         setShips(s);
+        setRoleColors(settings.roleColors);
       })
       .catch((err) => setError(err.message))
       .finally(() => setLoading(false));
@@ -76,11 +79,12 @@ export default function FlottePage() {
             responsable={divDoc?.responsableMemberId}
             second={divDoc?.secondMemberId}
             canManage={false}
+            roleColors={roleColors}
           />
         );
       })}
 
-      <DivisionSection division={null} members={sansDivision} canManage={false} />
+      <DivisionSection division={null} members={sansDivision} canManage={false} roleColors={roleColors} />
 
       <section className="ships-section">
         <div className="admin-page-header">

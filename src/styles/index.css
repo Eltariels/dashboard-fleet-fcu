@@ -173,6 +173,44 @@ label {
   font-size: 11px;
 }
 
+.role-checklist {
+  border: 1px solid var(--border);
+  background: rgba(6, 10, 18, 0.5);
+  padding: 8px 10px;
+}
+
+.role-colors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+}
+.role-color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.role-color-row input[type='color'] {
+  width: 40px;
+  height: 32px;
+  padding: 2px;
+  cursor: pointer;
+  background: var(--bg-panel-alt);
+}
+.role-color-preview {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 700;
+}
+.role-colors-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+.tag-role {
+  font-weight: 700;
+}
+
 h1, h2, h3 {
   margin: 0 0 8px;
   font-family: var(--font-display);

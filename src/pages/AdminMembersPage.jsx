@@ -1,13 +1,16 @@
 import { useEffect, useState } from 'react';
 import { api } from '../api/client.js';
 import { DIVISIONS } from '../divisions.js';
+import { DEFAULT_ROLE_COLORS } from '../roles.js';
 import DivisionSection from '../components/DivisionSection.jsx';
 import MemberFormModal from '../components/MemberFormModal.jsx';
 import ConfirmDialog from '../components/ConfirmDialog.jsx';
+import RoleColorsPanel from '../components/RoleColorsPanel.jsx';
 
 export default function AdminMembersPage() {
   const [members, setMembers] = useState([]);
   const [divisions, setDivisions] = useState([]);
+  const [roleColors, setRoleColors] = useState(DEFAULT_ROLE_COLORS);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [editingMember, setEditingMember] = useState(undefined); // undefined = closed, null = new
@@ -18,6 +21,10 @@ export default function AdminMembersPage() {
     setMembers(m);
     setDivisions(d);
   }
+
+  useEffect(() => {
+    api.get('/settings').then((s) => setRoleColors(s.roleColors));
+  }, []);
 
   useEffect(() => {
     reload()
@@ -57,6 +64,8 @@ export default function AdminMembersPage() {
         <h1>Gestion des membres Fleet</h1>
         <button onClick={() => setEditingMember(null)}>+ Ajouter un membre</button>
       </div>
+
+      <RoleColorsPanel roleColors={roleColors} onSaved={setRoleColors} />
 
       <section className="leadership-panel">
         <h2>Responsables de division</h2>
@@ -103,6 +112,7 @@ export default function AdminMembersPage() {
           canManage
           onEdit={setEditingMember}
           onDelete={setDeletingMember}
+          roleColors={roleColors}
         />
       ))}
 
@@ -112,6 +122,7 @@ export default function AdminMembersPage() {
         canManage
         onEdit={setEditingMember}
         onDelete={setDeletingMember}
+        roleColors={roleColors}
       />
 
       {editingMember !== undefined && (

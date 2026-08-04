@@ -22,7 +22,7 @@ function LogoBadge({ division }) {
   );
 }
 
-export default function DivisionSection({ division, members, responsable, second, canManage, onEdit, onDelete }) {
+export default function DivisionSection({ division, members, responsable, second, canManage, onEdit, onDelete, roleColors }) {
   return (
     <section className="division-section" style={{ '--division-accent': division?.accent || '#666' }}>
       <div className="division-header">
@@ -45,7 +45,7 @@ export default function DivisionSection({ division, members, responsable, second
       ) : (
         <div className="member-grid">
           {members.map((m) => (
-            <MemberCard key={m._id} member={m} canManage={canManage} onEdit={onEdit} onDelete={onDelete} />
+            <MemberCard key={m._id} member={m} canManage={canManage} onEdit={onEdit} onDelete={onDelete} roleColors={roleColors} />
           ))}
         </div>
       )}

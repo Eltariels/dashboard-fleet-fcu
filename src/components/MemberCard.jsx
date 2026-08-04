@@ -1,12 +1,17 @@
 import { divisionInfo } from '../divisions.js';
+import { highestRole, roleLabel, DEFAULT_ROLE_COLORS } from '../roles.js';
 
-export default function MemberCard({ member, canManage, onEdit, onDelete }) {
+export default function MemberCard({ member, canManage, onEdit, onDelete, roleColors = DEFAULT_ROLE_COLORS }) {
   const souhaitee = divisionInfo(member.divisionSouhaitee);
+  const topRole = highestRole(member.roles);
+  const pseudoColor = topRole ? roleColors[topRole.code] : null;
 
   return (
     <div className="member-card">
       <div className="member-card-header">
-        <h3>{member.pseudo}</h3>
+        <h3 style={pseudoColor ? { color: pseudoColor, textShadow: `0 0 12px ${pseudoColor}55` } : undefined}>
+          {member.pseudo}
+        </h3>
         {canManage && (
           <div className="member-card-actions">
             <button onClick={() => onEdit(member)} title="Modifier">✎</button>
@@ -14,6 +19,16 @@ export default function MemberCard({ member, canManage, onEdit, onDelete }) {
           </div>
         )}
       </div>
+
+      {member.roles?.length > 0 && (
+        <div className="tag-row">
+          {member.roles.map((r) => (
+            <span key={r} className="tag tag-role" style={{ borderColor: roleColors[r], color: roleColors[r] }}>
+              {roleLabel(r)}
+            </span>
+          ))}
+        </div>
+      )}
 
       {member.competences?.length > 0 && (
         <div className="tag-row">
