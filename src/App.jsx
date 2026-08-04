@@ -1,9 +1,8 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
-import DashboardPage from './pages/DashboardPage.jsx';
-import ShipsPage from './pages/ShipsPage.jsx';
+import FlottePage from './pages/FlottePage.jsx';
 import AdminMembersPage from './pages/AdminMembersPage.jsx';
 import AdminUsersPage from './pages/AdminUsersPage.jsx';
 import AdminLogsPage from './pages/AdminLogsPage.jsx';
@@ -20,18 +19,11 @@ export default function App() {
             path="/"
             element={
               <ProtectedRoute>
-                <DashboardPage />
+                <FlottePage />
               </ProtectedRoute>
             }
           />
-          <Route
-            path="/vaisseaux"
-            element={
-              <ProtectedRoute>
-                <ShipsPage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/vaisseaux" element={<Navigate to="/" replace />} />
           <Route
             path="/admin/membres"
             element={

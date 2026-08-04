@@ -293,6 +293,63 @@ h2 {
   font-size: 13px;
 }
 
+/* Fleet recap */
+.fleet-recap {
+  margin-bottom: 26px;
+}
+.recap-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+.recap-tile {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--division-accent, var(--border-strong));
+  clip-path: var(--clip-sm);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.recap-tile-label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+.recap-tile-count {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 900;
+  color: var(--division-accent, var(--accent));
+  text-shadow: 0 0 16px color-mix(in srgb, var(--division-accent, var(--accent)) 45%, transparent);
+  line-height: 1.2;
+}
+.recap-tile-sub {
+  font-size: 11px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.recap-tile-leads {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+.section-title {
+  margin: 0;
+}
+
+.ships-section {
+  margin-top: 8px;
+}
+
 /* Division sections */
 .division-section {
   background: var(--bg-panel);

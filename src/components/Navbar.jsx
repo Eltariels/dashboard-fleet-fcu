@@ -18,8 +18,7 @@ export default function Navbar() {
     <header className="navbar">
       <div className="navbar-brand">FCU — Fleet</div>
       <nav className="navbar-links">
-        <NavLink to="/" end>Dashboard</NavLink>
-        <NavLink to="/vaisseaux">Vaisseaux</NavLink>
+        <NavLink to="/" end>Flotte FCU</NavLink>
         {canManage && <NavLink to="/admin/membres">Membres</NavLink>}
         {canManage && <NavLink to="/admin/logs">Logs</NavLink>}
         {user.role === 'super_admin' && <NavLink to="/admin/comptes">Comptes</NavLink>}
