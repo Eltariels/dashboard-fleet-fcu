@@ -1,0 +1,28 @@
+{
+  "name": "dashboard-fleet-fcu",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "dev:api": "node scripts/devApiServer.mjs",
+    "build": "vite build",
+    "preview": "vite preview",
+    "seed:divisions": "node scripts/seedDivisions.js",
+    "seed:superadmin": "node scripts/seedSuperAdmin.js"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie": "^0.7.1",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.26.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "dotenv": "^16.4.5",
+    "vite": "^5.4.0"
+  }
+}
