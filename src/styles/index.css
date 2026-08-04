@@ -234,6 +234,21 @@ h2 {
   font-size: 13px;
   color: var(--text-dim);
 }
+.navbar-login-link {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  border: 1px solid var(--border-strong);
+  clip-path: var(--clip-sm);
+  padding: 8px 14px;
+}
+.navbar-login-link:hover {
+  box-shadow: 0 0 16px rgba(56, 214, 255, 0.35);
+}
 
 .role-badge {
   font-family: var(--font-display);
@@ -249,7 +264,6 @@ h2 {
 }
 .role-badge.role-super_admin { border-color: rgba(255, 77, 94, 0.5); color: #ff8a94; box-shadow: 0 0 10px rgba(255, 77, 94, 0.25) inset; }
 .role-badge.role-cadre { border-color: var(--border-strong); color: var(--accent); box-shadow: 0 0 10px rgba(56, 214, 255, 0.25) inset; }
-.role-badge.role-lecteur { border-color: var(--border); color: var(--text-dim); }
 
 /* Login */
 .login-page {

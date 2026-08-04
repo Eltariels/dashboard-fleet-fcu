@@ -5,13 +5,23 @@ export default function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
 
-  if (!user) return null;
-
-  const canManage = user.role === 'cadre' || user.role === 'super_admin';
-
   async function handleLogout() {
     await logout();
     navigate('/login');
+  }
+
+  if (!user) {
+    return (
+      <header className="navbar">
+        <div className="navbar-brand">FCU — Fleet</div>
+        <nav className="navbar-links">
+          <NavLink to="/" end>Flotte FCU</NavLink>
+        </nav>
+        <div className="navbar-user">
+          <NavLink to="/login" className="navbar-login-link">Connexion cadre</NavLink>
+        </div>
+      </header>
+    );
   }
 
   return (
@@ -19,8 +29,8 @@ export default function Navbar() {
       <div className="navbar-brand">FCU — Fleet</div>
       <nav className="navbar-links">
         <NavLink to="/" end>Flotte FCU</NavLink>
-        {canManage && <NavLink to="/admin/membres">Membres</NavLink>}
-        {canManage && <NavLink to="/admin/logs">Logs</NavLink>}
+        <NavLink to="/admin/membres">Membres</NavLink>
+        <NavLink to="/admin/logs">Logs</NavLink>
         {user.role === 'super_admin' && <NavLink to="/admin/comptes">Comptes</NavLink>}
         <NavLink to="/compte">Mon compte</NavLink>
       </nav>

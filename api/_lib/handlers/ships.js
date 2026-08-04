@@ -1,12 +1,13 @@
 import { connectDB } from '../db.js';
 import Ship from '../models/Ship.js';
-import { requireRole } from '../auth.js';
+import { getUserFromReq } from '../auth.js';
 import { writeLog } from '../log.js';
 
 const MAX_IMAGE_LENGTH = 1_500_000; // ~1.1 Mo decode, marge large sous la limite de payload Vercel
 
-export default requireRole(null, async (req, res) => {
+export default async function handler(req, res) {
   await connectDB();
+  const authUser = getUserFromReq(req);
   const params = req.query.id;
   const id = Array.isArray(params) ? params[0] : params;
 
@@ -18,8 +19,8 @@ export default requireRole(null, async (req, res) => {
     }
 
     if (req.method === 'POST') {
-      if (!['cadre', 'super_admin'].includes(req.user.role)) {
-        res.status(403).json({ error: 'Acces refuse' });
+      if (!authUser || !['cadre', 'super_admin'].includes(authUser.role)) {
+        res.status(authUser ? 403 : 401).json({ error: authUser ? 'Acces refuse' : 'Non authentifie' });
         return;
       }
 
@@ -42,7 +43,7 @@ export default requireRole(null, async (req, res) => {
         equipage: equipage || '',
       });
 
-      await writeLog(req.user, 'CREATE_SHIP', `vaisseau:${ship.nom}`, `Ajoute au catalogue (${ship.manufacturer})`);
+      await writeLog(authUser, 'CREATE_SHIP', `vaisseau:${ship.nom}`, `Ajoute au catalogue (${ship.manufacturer})`);
 
       res.status(201).json(ship);
       return;
@@ -62,8 +63,8 @@ export default requireRole(null, async (req, res) => {
     return;
   }
 
-  if (!['cadre', 'super_admin'].includes(req.user.role)) {
-    res.status(403).json({ error: 'Acces refuse' });
+  if (!authUser || !['cadre', 'super_admin'].includes(authUser.role)) {
+    res.status(authUser ? 403 : 401).json({ error: authUser ? 'Acces refuse' : 'Non authentifie' });
     return;
   }
 
@@ -89,7 +90,7 @@ export default requireRole(null, async (req, res) => {
 
     await ship.save();
 
-    await writeLog(req.user, 'UPDATE_SHIP', `vaisseau:${ship.nom}`, 'Fiche vaisseau modifiee');
+    await writeLog(authUser, 'UPDATE_SHIP', `vaisseau:${ship.nom}`, 'Fiche vaisseau modifiee');
 
     res.status(200).json(ship);
     return;
@@ -101,10 +102,10 @@ export default requireRole(null, async (req, res) => {
       res.status(404).json({ error: 'Vaisseau introuvable' });
       return;
     }
-    await writeLog(req.user, 'DELETE_SHIP', `vaisseau:${ship.nom}`, 'Retire du catalogue');
+    await writeLog(authUser, 'DELETE_SHIP', `vaisseau:${ship.nom}`, 'Retire du catalogue');
     res.status(200).json({ ok: true });
     return;
   }
 
   res.status(405).json({ error: 'Methode non autorisee' });
-});
+}

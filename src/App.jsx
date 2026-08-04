@@ -15,14 +15,7 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
-          <Route
-            path="/"
-            element={
-              <ProtectedRoute>
-                <FlottePage />
-              </ProtectedRoute>
-            }
-          />
+          <Route path="/" element={<FlottePage />} />
           <Route path="/vaisseaux" element={<Navigate to="/" replace />} />
           <Route
             path="/admin/membres"

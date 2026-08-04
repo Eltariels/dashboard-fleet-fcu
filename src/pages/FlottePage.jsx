@@ -11,7 +11,7 @@ import ConfirmDialog from '../components/ConfirmDialog.jsx';
 
 export default function FlottePage() {
   const { user } = useAuth();
-  const canManageShips = user.role === 'cadre' || user.role === 'super_admin';
+  const canManageShips = user?.role === 'cadre' || user?.role === 'super_admin';
 
   const [members, setMembers] = useState([]);
   const [divisions, setDivisions] = useState([]);

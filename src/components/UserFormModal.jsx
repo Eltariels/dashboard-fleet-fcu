@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 const ROLES = [
-  { value: 'lecteur', label: 'Lecteur (lecture seule)' },
   { value: 'cadre', label: 'Cadre (admin membres)' },
   { value: 'super_admin', label: 'Super admin' },
 ];
@@ -9,7 +8,7 @@ const ROLES = [
 export default function UserFormModal({ account, onSave, onClose }) {
   const [pseudo, setPseudo] = useState(account?.pseudo || '');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState(account?.role || 'lecteur');
+  const [role, setRole] = useState(account?.role || 'cadre');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
 

@@ -1,10 +1,13 @@
 import { connectDB } from '../db.js';
 import Member from '../models/Member.js';
-import { requireRole } from '../auth.js';
+import { getUserFromReq } from '../auth.js';
 import { writeLog } from '../log.js';
 
-export default requireRole(null, async (req, res) => {
+// Lecture publique (page Flotte FCU accessible sans connexion) ; ecriture
+// reservee aux comptes cadre/super_admin.
+export default async function handler(req, res) {
   await connectDB();
+  const authUser = getUserFromReq(req);
   const params = req.query.id;
   const id = Array.isArray(params) ? params[0] : params;
 
@@ -16,8 +19,8 @@ export default requireRole(null, async (req, res) => {
     }
 
     if (req.method === 'POST') {
-      if (!['cadre', 'super_admin'].includes(req.user.role)) {
-        res.status(403).json({ error: 'Acces refuse' });
+      if (!authUser || !['cadre', 'super_admin'].includes(authUser.role)) {
+        res.status(authUser ? 403 : 401).json({ error: authUser ? 'Acces refuse' : 'Non authentifie' });
         return;
       }
 
@@ -36,7 +39,7 @@ export default requireRole(null, async (req, res) => {
         divisionSouhaitee: divisionSouhaitee || null,
       });
 
-      await writeLog(req.user, 'CREATE_MEMBER', `membre:${member.pseudo}`, `Fiche creee (division: ${member.divisionActuelle || 'aucune'})`);
+      await writeLog(authUser, 'CREATE_MEMBER', `membre:${member.pseudo}`, `Fiche creee (division: ${member.divisionActuelle || 'aucune'})`);
 
       res.status(201).json(member);
       return;
@@ -56,8 +59,8 @@ export default requireRole(null, async (req, res) => {
     return;
   }
 
-  if (!['cadre', 'super_admin'].includes(req.user.role)) {
-    res.status(403).json({ error: 'Acces refuse' });
+  if (!authUser || !['cadre', 'super_admin'].includes(authUser.role)) {
+    res.status(authUser ? 403 : 401).json({ error: authUser ? 'Acces refuse' : 'Non authentifie' });
     return;
   }
 
@@ -82,13 +85,13 @@ export default requireRole(null, async (req, res) => {
 
     if (divisionActuelle !== undefined && divisionActuelle !== before.divisionActuelle) {
       await writeLog(
-        req.user,
+        authUser,
         'CHANGE_DIVISION',
         `membre:${before.pseudo}`,
         `Division ${before.divisionActuelle || 'aucune'} -> ${divisionActuelle || 'aucune'}`
       );
     } else {
-      await writeLog(req.user, 'UPDATE_MEMBER', `membre:${before.pseudo}`, 'Fiche modifiee');
+      await writeLog(authUser, 'UPDATE_MEMBER', `membre:${before.pseudo}`, 'Fiche modifiee');
     }
 
     res.status(200).json(member);
@@ -101,10 +104,10 @@ export default requireRole(null, async (req, res) => {
       res.status(404).json({ error: 'Membre introuvable' });
       return;
     }
-    await writeLog(req.user, 'DELETE_MEMBER', `membre:${member.pseudo}`, 'Fiche supprimee');
+    await writeLog(authUser, 'DELETE_MEMBER', `membre:${member.pseudo}`, 'Fiche supprimee');
     res.status(200).json({ ok: true });
     return;
   }
 
   res.status(405).json({ error: 'Methode non autorisee' });
-});
+}

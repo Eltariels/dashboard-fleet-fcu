@@ -2,6 +2,8 @@
 
 Dashboard de suivi des membres de la branche **Fleet** de la corporation FCU (Star Citizen) : 3 divisions de specialite (Stryker, Rhino, Spectre) + les membres Fleet classiques sans division.
 
+La page "Flotte FCU" (recap des divisions, roster, catalogue de vaisseaux) est **publique** : accessible sans connexion. La connexion est reservee aux cadres/super admin pour gerer les fiches, comptes et voir les logs.
+
 Stack 100% gratuite : React (Vite, JS pur) + fonctions serverless Vercel (`/api`) + MongoDB Atlas (cluster M0 gratuit).
 
 ## 1. Logos des divisions
@@ -41,12 +43,16 @@ npm run seed:superadmin
 
 ## 4. Lancer en local
 
+Deux terminaux, pas besoin de la CLI Vercel :
 ```bash
-npm install -g vercel   # une seule fois
-vercel dev
+npm run dev:api
 ```
+```bash
+npm run dev
+```
+Ouvre l'URL affichee par le deuxieme terminal (Vite proxy `/api` vers le premier).
 
-`vercel dev` sert le frontend (Vite) et les fonctions `/api` sur le meme port (evite tout probleme de cookies/CORS). Ouvre l'URL affichee (en general http://localhost:3000).
+(Alternative : `npm install -g vercel` puis `vercel dev`, qui sert tout sur un seul port.)
 
 ## 5. Deployer (Vercel + GitHub, gratuit)
 
@@ -70,8 +76,8 @@ vercel dev
 
 | Role | Peut |
 |---|---|
-| `lecteur` | Voir le dashboard (lecture seule) |
-| `cadre` | + Gerer les fiches membres (creer/modifier/supprimer, changer de division), voir les logs |
+| _(visiteur non connecte)_ | Voir la page Flotte FCU (recap, roster, vaisseaux) en lecture seule |
+| `cadre` | + Se connecter, gerer les fiches membres et les vaisseaux (creer/modifier/supprimer, changer de division), voir les logs |
 | `super_admin` | + Gerer les comptes (creer, changer role, reinitialiser mot de passe, supprimer) |
 
 ## Securite : mots de passe

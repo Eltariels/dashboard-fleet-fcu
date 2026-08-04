@@ -28,7 +28,7 @@ export default requireRole(['super_admin'], async (req, res) => {
         res.status(400).json({ error: 'Le mot de passe doit faire au moins 6 caracteres' });
         return;
       }
-      if (!['super_admin', 'cadre', 'lecteur'].includes(role)) {
+      if (!['super_admin', 'cadre'].includes(role)) {
         res.status(400).json({ error: 'Role invalide' });
         return;
       }
@@ -100,7 +100,7 @@ export default requireRole(['super_admin'], async (req, res) => {
     }
 
     if (role !== undefined && role !== user.role) {
-      if (!['super_admin', 'cadre', 'lecteur'].includes(role)) {
+      if (!['super_admin', 'cadre'].includes(role)) {
         res.status(400).json({ error: 'Role invalide' });
         return;
       }
