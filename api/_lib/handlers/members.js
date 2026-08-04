@@ -1,7 +1,7 @@
-import { connectDB } from '../_lib/db.js';
-import Member from '../_lib/models/Member.js';
-import { requireRole } from '../_lib/auth.js';
-import { writeLog } from '../_lib/log.js';
+import { connectDB } from '../db.js';
+import Member from '../models/Member.js';
+import { requireRole } from '../auth.js';
+import { writeLog } from '../log.js';
 
 export default requireRole(null, async (req, res) => {
   await connectDB();

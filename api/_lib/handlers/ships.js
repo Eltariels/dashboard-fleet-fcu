@@ -1,7 +1,7 @@
-import { connectDB } from '../_lib/db.js';
-import Ship from '../_lib/models/Ship.js';
-import { requireRole } from '../_lib/auth.js';
-import { writeLog } from '../_lib/log.js';
+import { connectDB } from '../db.js';
+import Ship from '../models/Ship.js';
+import { requireRole } from '../auth.js';
+import { writeLog } from '../log.js';
 
 const MAX_IMAGE_LENGTH = 1_500_000; // ~1.1 Mo decode, marge large sous la limite de payload Vercel
 

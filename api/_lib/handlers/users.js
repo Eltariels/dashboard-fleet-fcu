@@ -1,8 +1,8 @@
-import { connectDB } from '../_lib/db.js';
-import User from '../_lib/models/User.js';
-import { hashPassword } from '../_lib/hash.js';
-import { requireRole } from '../_lib/auth.js';
-import { writeLog } from '../_lib/log.js';
+import { connectDB } from '../db.js';
+import User from '../models/User.js';
+import { hashPassword } from '../hash.js';
+import { requireRole } from '../auth.js';
+import { writeLog } from '../log.js';
 
 // path: undefined -> /api/users, [id] -> /api/users/:id, [id, 'reset-password'] -> /api/users/:id/reset-password
 export default requireRole(['super_admin'], async (req, res) => {

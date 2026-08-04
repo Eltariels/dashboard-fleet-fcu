@@ -5,15 +5,19 @@ import 'dotenv/config';
 import http from 'node:http';
 import { URL } from 'node:url';
 
-// *name = catch-all (0 ou plusieurs segments, capture un tableau) - reproduit
-// le comportement des routes Vercel [[...name]].js utilisees en prod.
+// *name = catch-all Vercel [...name].js (1+ segments). Miroir exact des
+// fichiers /api en prod : index.js pour le chemin nu + [...x].js pour le reste.
 const routes = [
   { method: 'ANY', pattern: '/api/auth/:action', module: '../api/auth/[action].js' },
-  { method: 'ANY', pattern: '/api/members/*id', module: '../api/members/[[...id]].js' },
-  { method: 'ANY', pattern: '/api/divisions/*id', module: '../api/divisions/[[...id]].js' },
-  { method: 'ANY', pattern: '/api/users/*path', module: '../api/users/[[...path]].js' },
+  { method: 'ANY', pattern: '/api/members', module: '../api/members/index.js' },
+  { method: 'ANY', pattern: '/api/members/*id', module: '../api/members/[...id].js' },
+  { method: 'ANY', pattern: '/api/divisions', module: '../api/divisions/index.js' },
+  { method: 'ANY', pattern: '/api/divisions/*id', module: '../api/divisions/[...id].js' },
+  { method: 'ANY', pattern: '/api/users', module: '../api/users/index.js' },
+  { method: 'ANY', pattern: '/api/users/*path', module: '../api/users/[...path].js' },
   { method: 'GET', pattern: '/api/logs', module: '../api/logs/index.js' },
-  { method: 'ANY', pattern: '/api/ships/*id', module: '../api/ships/[[...id]].js' },
+  { method: 'ANY', pattern: '/api/ships', module: '../api/ships/index.js' },
+  { method: 'ANY', pattern: '/api/ships/*id', module: '../api/ships/[...id].js' },
 ];
 
 const compiled = await Promise.all(
