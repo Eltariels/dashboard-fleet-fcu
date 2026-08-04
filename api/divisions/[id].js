@@ -1,5 +1,6 @@
 import { connectDB } from '../_lib/db.js';
 import Division from '../_lib/models/Division.js';
+import '../_lib/models/Member.js'; // requis par populate() ci-dessous
 import { requireRole } from '../_lib/auth.js';
 import { writeLog } from '../_lib/log.js';
 
