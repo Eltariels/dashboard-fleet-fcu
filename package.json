@@ -9,7 +9,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "seed:divisions": "node scripts/seedDivisions.js",
-    "seed:superadmin": "node scripts/seedSuperAdmin.js"
+    "seed:superadmin": "node scripts/seedSuperAdmin.js",
+    "seed:ships": "node scripts/seedShips.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",

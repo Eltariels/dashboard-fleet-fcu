@@ -18,6 +18,8 @@ const routes = [
   { method: 'ANY', pattern: '/api/users/:id', module: '../api/users/[id].js' },
   { method: 'POST', pattern: '/api/users/:id/reset-password', module: '../api/users/[id]/reset-password.js' },
   { method: 'GET', pattern: '/api/logs', module: '../api/logs/index.js' },
+  { method: 'ANY', pattern: '/api/ships', module: '../api/ships/index.js' },
+  { method: 'ANY', pattern: '/api/ships/:id', module: '../api/ships/[id].js' },
 ];
 
 const compiled = await Promise.all(

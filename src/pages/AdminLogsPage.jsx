@@ -15,6 +15,9 @@ const ACTION_LABELS = {
   CHANGE_ROLE: 'Changement de role',
   RESET_PASSWORD: 'Reinitialisation mot de passe',
   DELETE_USER: 'Suppression compte',
+  CREATE_SHIP: 'Ajout vaisseau',
+  UPDATE_SHIP: 'Modification vaisseau',
+  DELETE_SHIP: 'Suppression vaisseau',
 };
 
 export default function AdminLogsPage() {

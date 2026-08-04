@@ -3,6 +3,7 @@ import Navbar from './components/Navbar.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
 import DashboardPage from './pages/DashboardPage.jsx';
+import ShipsPage from './pages/ShipsPage.jsx';
 import AdminMembersPage from './pages/AdminMembersPage.jsx';
 import AdminUsersPage from './pages/AdminUsersPage.jsx';
 import AdminLogsPage from './pages/AdminLogsPage.jsx';
@@ -20,6 +21,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <DashboardPage />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/vaisseaux"
+            element={
+              <ProtectedRoute>
+                <ShipsPage />
               </ProtectedRoute>
             }
           />
