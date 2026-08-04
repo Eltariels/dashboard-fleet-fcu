@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Navigate, useNavigate } from 'react-router-dom';
+import { Navigate, useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 
 export default function LoginPage() {
@@ -47,6 +47,10 @@ export default function LoginPage() {
         <button type="submit" disabled={submitting}>
           {submitting ? 'Connexion...' : 'Se connecter'}
         </button>
+
+        <p className="login-footer">
+          Pas encore de compte cadre ? <Link to="/inscription">Demander un compte</Link>
+        </p>
       </form>
     </div>
   );

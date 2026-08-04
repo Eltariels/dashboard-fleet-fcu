@@ -265,6 +265,17 @@ h2 {
 .role-badge.role-super_admin { border-color: rgba(255, 77, 94, 0.5); color: #ff8a94; box-shadow: 0 0 10px rgba(255, 77, 94, 0.25) inset; }
 .role-badge.role-cadre { border-color: var(--border-strong); color: var(--accent); box-shadow: 0 0 10px rgba(56, 214, 255, 0.25) inset; }
 
+.status-badge {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+}
+.status-badge.status-active { border-color: var(--success); color: var(--success); }
+.status-badge.status-pending { border-color: #e8b93a; color: #e8b93a; }
+
 /* Login */
 .login-page {
   min-height: calc(100vh - 68px);
@@ -296,6 +307,15 @@ h2 {
   width: 100%;
   padding: 12px;
   margin-top: 10px;
+}
+.login-footer {
+  margin: 16px 0 0;
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+}
+.login-footer a {
+  color: var(--accent);
 }
 
 .form-error {

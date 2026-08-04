@@ -10,6 +10,7 @@ export default async function handler(req, res) {
   const { action } = req.query;
 
   if (action === 'login') return handleLogin(req, res);
+  if (action === 'register') return handleRegister(req, res);
   if (action === 'logout') return handleLogout(req, res);
   if (action === 'me') return handleMe(req, res);
   if (action === 'change-password') return handleChangePassword(req, res);
@@ -42,12 +43,53 @@ async function handleLogin(req, res) {
     return;
   }
 
+  if (user.status !== 'active') {
+    res.status(403).json({ error: 'Compte en attente de validation par un administrateur' });
+    return;
+  }
+
   const token = signToken({ sub: user._id.toString(), pseudo: user.pseudo, role: user.role });
   setAuthCookie(res, token);
 
   await writeLog({ pseudo: user.pseudo, role: user.role }, 'LOGIN', `compte:${user.pseudo}`, 'Connexion reussie');
 
   res.status(200).json({ id: user._id, pseudo: user.pseudo, role: user.role });
+}
+
+async function handleRegister(req, res) {
+  if (req.method !== 'POST') {
+    res.status(405).json({ error: 'Methode non autorisee' });
+    return;
+  }
+
+  const { pseudo, password } = req.body || {};
+  if (!pseudo || !pseudo.trim() || !password) {
+    res.status(400).json({ error: 'Pseudo et mot de passe requis' });
+    return;
+  }
+  if (password.length < 6) {
+    res.status(400).json({ error: 'Le mot de passe doit faire au moins 6 caracteres' });
+    return;
+  }
+
+  await connectDB();
+  const existing = await User.findOne({ pseudo: pseudo.trim() });
+  if (existing) {
+    res.status(409).json({ error: 'Ce pseudo est deja utilise' });
+    return;
+  }
+
+  const passwordHash = await hashPassword(password);
+  const user = await User.create({ pseudo: pseudo.trim(), passwordHash, role: 'cadre', status: 'pending' });
+
+  await writeLog(
+    { pseudo: user.pseudo, role: user.role },
+    'REGISTER_REQUEST',
+    `compte:${user.pseudo}`,
+    'Demande de creation de compte cadre (en attente de validation)'
+  );
+
+  res.status(201).json({ ok: true });
 }
 
 async function handleLogout(req, res) {

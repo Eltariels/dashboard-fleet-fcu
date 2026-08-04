@@ -40,7 +40,7 @@ export default requireRole(['super_admin'], async (req, res) => {
       }
 
       const passwordHash = await hashPassword(password);
-      const user = await User.create({ pseudo: pseudo.trim(), passwordHash, role });
+      const user = await User.create({ pseudo: pseudo.trim(), passwordHash, role, status: 'active' });
 
       await writeLog(req.user, 'CREATE_USER', `compte:${user.pseudo}`, `Role initial: ${role}`);
 
@@ -50,6 +50,28 @@ export default requireRole(['super_admin'], async (req, res) => {
     }
 
     res.status(405).json({ error: 'Methode non autorisee' });
+    return;
+  }
+
+  if (subAction === 'validate') {
+    if (req.method !== 'POST') {
+      res.status(405).json({ error: 'Methode non autorisee' });
+      return;
+    }
+
+    const user = await User.findById(id);
+    if (!user) {
+      res.status(404).json({ error: 'Compte introuvable' });
+      return;
+    }
+
+    user.status = 'active';
+    await user.save();
+
+    await writeLog(req.user, 'VALIDATE_USER', `compte:${user.pseudo}`, 'Compte cadre valide');
+
+    const { passwordHash: _omit, ...safe } = user.toObject();
+    res.status(200).json(safe);
     return;
   }
 

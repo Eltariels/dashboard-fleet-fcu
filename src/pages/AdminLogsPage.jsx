@@ -4,6 +4,8 @@ import { api } from '../api/client.js';
 const ACTION_LABELS = {
   LOGIN: 'Connexion',
   LOGOUT: 'Deconnexion',
+  REGISTER_REQUEST: 'Demande de compte cadre',
+  VALIDATE_USER: 'Validation de compte',
   CHANGE_PASSWORD: 'Changement mot de passe',
   CREATE_MEMBER: 'Creation membre',
   UPDATE_MEMBER: 'Modification membre',

@@ -2,6 +2,7 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar.jsx';
 import ProtectedRoute from './components/ProtectedRoute.jsx';
 import LoginPage from './pages/LoginPage.jsx';
+import RegisterPage from './pages/RegisterPage.jsx';
 import FlottePage from './pages/FlottePage.jsx';
 import AdminMembersPage from './pages/AdminMembersPage.jsx';
 import AdminUsersPage from './pages/AdminUsersPage.jsx';
@@ -15,6 +16,7 @@ export default function App() {
       <main className="app-main">
         <Routes>
           <Route path="/login" element={<LoginPage />} />
+          <Route path="/inscription" element={<RegisterPage />} />
           <Route path="/" element={<FlottePage />} />
           <Route path="/vaisseaux" element={<Navigate to="/" replace />} />
           <Route

@@ -38,6 +38,11 @@ export default function AdminUsersPage() {
     await api.post(`/users/${resettingUser._id}/reset-password`, { newPassword });
   }
 
+  async function handleValidate(u) {
+    await api.post(`/users/${u._id}/validate`);
+    await reload();
+  }
+
   async function handleDeleteConfirmed() {
     await api.del(`/users/${deletingUser._id}`);
     setDeletingUser(null);
@@ -59,6 +64,7 @@ export default function AdminUsersPage() {
           <tr>
             <th>Pseudo</th>
             <th>Role</th>
+            <th>Statut</th>
             <th>Cree le</th>
             <th></th>
           </tr>
@@ -68,8 +74,16 @@ export default function AdminUsersPage() {
             <tr key={u._id}>
               <td>{u.pseudo}</td>
               <td><span className={`role-badge role-${u.role}`}>{u.role}</span></td>
+              <td>
+                {u.status === 'pending' ? (
+                  <span className="status-badge status-pending">En attente</span>
+                ) : (
+                  <span className="status-badge status-active">Actif</span>
+                )}
+              </td>
               <td>{new Date(u.createdAt).toLocaleDateString('fr-FR')}</td>
               <td className="table-actions">
+                {u.status === 'pending' && <button onClick={() => handleValidate(u)}>Valider</button>}
                 <button onClick={() => setEditingUser(u)}>Modifier</button>
                 <button onClick={() => setResettingUser(u)}>Reinit. mdp</button>
                 <button
