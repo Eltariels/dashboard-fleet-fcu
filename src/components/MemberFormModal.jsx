@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { DIVISIONS } from '../divisions.js';
+import { manufacturerLabel } from '../manufacturers.js';
+import { api } from '../api/client.js';
 
 function toList(str) {
   return str
@@ -11,12 +13,21 @@ function toList(str) {
 export default function MemberFormModal({ member, onSave, onClose }) {
   const [pseudo, setPseudo] = useState(member?.pseudo || '');
   const [competences, setCompetences] = useState((member?.competences || []).join(', '));
-  const [vaisseaux, setVaisseaux] = useState((member?.vaisseaux || []).join(', '));
+  const [vaisseaux, setVaisseaux] = useState(member?.vaisseaux || []);
+  const [ships, setShips] = useState([]);
   const [commentaire, setCommentaire] = useState(member?.commentaire || '');
   const [divisionActuelle, setDivisionActuelle] = useState(member?.divisionActuelle || '');
   const [divisionSouhaitee, setDivisionSouhaitee] = useState(member?.divisionSouhaitee || '');
   const [error, setError] = useState('');
   const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    api.get('/ships').then(setShips).catch(() => setShips([]));
+  }, []);
+
+  function toggleShip(nom) {
+    setVaisseaux((prev) => (prev.includes(nom) ? prev.filter((v) => v !== nom) : [...prev, nom]));
+  }
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -30,7 +41,7 @@ export default function MemberFormModal({ member, onSave, onClose }) {
       await onSave({
         pseudo: pseudo.trim(),
         competences: toList(competences),
-        vaisseaux: toList(vaisseaux),
+        vaisseaux,
         commentaire: commentaire.trim(),
         divisionActuelle: divisionActuelle || null,
         divisionSouhaitee: divisionSouhaitee || null,
@@ -56,10 +67,25 @@ export default function MemberFormModal({ member, onSave, onClose }) {
           <input value={competences} onChange={(e) => setCompetences(e.target.value)} placeholder="pilote, gunner, medic" />
         </label>
 
-        <label>
-          Vaisseaux possedes (separes par des virgules)
-          <input value={vaisseaux} onChange={(e) => setVaisseaux(e.target.value)} placeholder="Constellation, Cutlass" />
-        </label>
+        <div className="ship-checklist-field">
+          <span className="member-field-label">Vaisseaux possedes</span>
+          {ships.length === 0 ? (
+            <p className="empty-state">Aucun vaisseau dans le catalogue pour l'instant.</p>
+          ) : (
+            <div className="ship-checklist">
+              {ships.map((s) => (
+                <label key={s._id} className="ship-checklist-row">
+                  <input
+                    type="checkbox"
+                    checked={vaisseaux.includes(s.nom)}
+                    onChange={() => toggleShip(s.nom)}
+                  />
+                  {s.nom} <span className="ship-checklist-manufacturer">({manufacturerLabel(s.manufacturer)})</span>
+                </label>
+              ))}
+            </div>
+          )}
+        </div>
 
         <label>
           Commentaire

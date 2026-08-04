@@ -142,6 +142,37 @@ label {
   margin-bottom: 14px;
 }
 
+.ship-checklist-field {
+  margin-bottom: 14px;
+}
+.ship-checklist {
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid var(--border);
+  background: rgba(6, 10, 18, 0.5);
+  padding: 8px 10px;
+}
+.ship-checklist-row {
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+  gap: 8px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+  color: var(--text);
+  margin-bottom: 6px !important;
+  cursor: pointer;
+}
+.ship-checklist-row input[type='checkbox'] {
+  width: auto;
+  accent-color: var(--accent);
+}
+.ship-checklist-manufacturer {
+  color: var(--text-dim);
+  font-size: 11px;
+}
+
 h1, h2, h3 {
   margin: 0 0 8px;
   font-family: var(--font-display);
@@ -224,6 +255,29 @@ h2 {
   color: var(--accent);
   border-bottom-color: var(--accent);
   text-shadow: 0 0 10px rgba(56, 214, 255, 0.6);
+}
+.pending-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  margin-left: 6px;
+  border-radius: 999px;
+  background: var(--danger);
+  color: #fff;
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: 0 0 10px rgba(255, 77, 94, 0.6);
+  animation: pending-pulse 1.8s ease-in-out infinite;
+}
+@keyframes pending-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
 }
 .navbar-user {
   display: flex;
