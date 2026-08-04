@@ -5,19 +5,16 @@ import 'dotenv/config';
 import http from 'node:http';
 import { URL } from 'node:url';
 
-// *name = catch-all Vercel [...name].js (1+ segments). Miroir exact des
-// fichiers /api en prod : index.js pour le chemin nu + [...x].js pour le reste.
+// Un seul fichier par ressource ; l'id (et pour /users, l'action) passent en
+// query string (?id=...) plutot qu'en segment d'URL. C'est le miroir exact
+// de /api en prod - voir commit "Fix broken id-routing" pour le pourquoi.
 const routes = [
   { method: 'ANY', pattern: '/api/auth/:action', module: '../api/auth/[action].js' },
   { method: 'ANY', pattern: '/api/members', module: '../api/members/index.js' },
-  { method: 'ANY', pattern: '/api/members/*id', module: '../api/members/[...id].js' },
   { method: 'ANY', pattern: '/api/divisions', module: '../api/divisions/index.js' },
-  { method: 'ANY', pattern: '/api/divisions/*id', module: '../api/divisions/[...id].js' },
   { method: 'ANY', pattern: '/api/users', module: '../api/users/index.js' },
-  { method: 'ANY', pattern: '/api/users/*path', module: '../api/users/[...path].js' },
   { method: 'GET', pattern: '/api/logs', module: '../api/logs/index.js' },
   { method: 'ANY', pattern: '/api/ships', module: '../api/ships/index.js' },
-  { method: 'ANY', pattern: '/api/ships/*id', module: '../api/ships/[...id].js' },
 ];
 
 const compiled = await Promise.all(
@@ -33,23 +30,6 @@ function matchRoute(method, pathname) {
   for (const route of compiled) {
     if (route.method !== 'ANY' && route.method !== method) continue;
     const routeSegs = route.segments;
-    const lastSeg = routeSegs[routeSegs.length - 1];
-
-    if (lastSeg && lastSeg.startsWith('*')) {
-      const prefixLen = routeSegs.length - 1;
-      if (segments.length < prefixLen) continue;
-      const params = {};
-      let ok = true;
-      for (let i = 0; i < prefixLen; i++) {
-        const routeSeg = routeSegs[i];
-        if (routeSeg.startsWith(':')) params[routeSeg.slice(1)] = decodeURIComponent(segments[i]);
-        else if (routeSeg !== segments[i]) { ok = false; break; }
-      }
-      if (!ok) continue;
-      params[lastSeg.slice(1)] = segments.slice(prefixLen).map(decodeURIComponent);
-      return { handler: route.handler, params };
-    }
-
     if (routeSegs.length !== segments.length) continue;
     const params = {};
     let ok = true;

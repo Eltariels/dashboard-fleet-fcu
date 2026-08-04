@@ -8,8 +8,7 @@ const MAX_IMAGE_LENGTH = 1_500_000; // ~1.1 Mo decode, marge large sous la limit
 export default async function handler(req, res) {
   await connectDB();
   const authUser = getUserFromReq(req);
-  const params = req.query.id;
-  const id = Array.isArray(params) ? params[0] : params;
+  const id = req.query.id;
 
   if (!id) {
     if (req.method === 'GET') {

@@ -4,12 +4,12 @@ import { hashPassword } from '../hash.js';
 import { requireRole } from '../auth.js';
 import { writeLog } from '../log.js';
 
-// path: undefined -> /api/users, [id] -> /api/users/:id, [id, 'reset-password'] -> /api/users/:id/reset-password
+// id et action passent en query string (?id=...&action=validate|reset-password)
+// plutot qu'en segments d'URL : plus fiable avec le routeur serverless
+// generique de Vercel (voir commit "Fix broken id-routing").
 export default requireRole(['super_admin'], async (req, res) => {
   await connectDB();
-  const parts = req.query.path;
-  const segments = Array.isArray(parts) ? parts : parts ? [parts] : [];
-  const [id, subAction] = segments;
+  const { id, action } = req.query;
 
   if (!id) {
     if (req.method === 'GET') {
@@ -53,7 +53,7 @@ export default requireRole(['super_admin'], async (req, res) => {
     return;
   }
 
-  if (subAction === 'validate') {
+  if (action === 'validate') {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Methode non autorisee' });
       return;
@@ -75,7 +75,7 @@ export default requireRole(['super_admin'], async (req, res) => {
     return;
   }
 
-  if (subAction === 'reset-password') {
+  if (action === 'reset-password') {
     if (req.method !== 'POST') {
       res.status(405).json({ error: 'Methode non autorisee' });
       return;

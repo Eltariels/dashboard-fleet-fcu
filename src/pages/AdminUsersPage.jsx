@@ -26,7 +26,7 @@ export default function AdminUsersPage() {
 
   async function handleSave(payload) {
     if (editingUser) {
-      await api.put(`/users/${editingUser._id}`, payload);
+      await api.put(`/users?id=${editingUser._id}`, payload);
     } else {
       await api.post('/users', payload);
     }
@@ -35,16 +35,16 @@ export default function AdminUsersPage() {
   }
 
   async function handleResetPassword(newPassword) {
-    await api.post(`/users/${resettingUser._id}/reset-password`, { newPassword });
+    await api.post(`/users?id=${resettingUser._id}&action=reset-password`, { newPassword });
   }
 
   async function handleValidate(u) {
-    await api.post(`/users/${u._id}/validate`);
+    await api.post(`/users?id=${u._id}&action=validate`);
     await reload();
   }
 
   async function handleDeleteConfirmed() {
-    await api.del(`/users/${deletingUser._id}`);
+    await api.del(`/users?id=${deletingUser._id}`);
     setDeletingUser(null);
     await reload();
   }

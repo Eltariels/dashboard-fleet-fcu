@@ -4,12 +4,13 @@ import { getUserFromReq } from '../auth.js';
 import { writeLog } from '../log.js';
 
 // Lecture publique (page Flotte FCU accessible sans connexion) ; ecriture
-// reservee aux comptes cadre/super_admin.
+// reservee aux comptes cadre/super_admin. L'id passe en query string
+// (?id=...) plutot qu'en segment d'URL : plus fiable avec le routeur
+// serverless generique de Vercel (voir commit "Fix broken id-routing").
 export default async function handler(req, res) {
   await connectDB();
   const authUser = getUserFromReq(req);
-  const params = req.query.id;
-  const id = Array.isArray(params) ? params[0] : params;
+  const id = req.query.id;
 
   if (!id) {
     if (req.method === 'GET') {

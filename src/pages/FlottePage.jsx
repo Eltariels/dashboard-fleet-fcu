@@ -40,7 +40,7 @@ export default function FlottePage() {
 
   async function handleSaveShip(payload) {
     if (editingShip) {
-      await api.put(`/ships/${editingShip._id}`, payload);
+      await api.put(`/ships?id=${editingShip._id}`, payload);
     } else {
       await api.post('/ships', payload);
     }
@@ -49,7 +49,7 @@ export default function FlottePage() {
   }
 
   async function handleDeleteShipConfirmed() {
-    await api.del(`/ships/${deletingShip._id}`);
+    await api.del(`/ships?id=${deletingShip._id}`);
     setDeletingShip(null);
     await reloadShips();
   }

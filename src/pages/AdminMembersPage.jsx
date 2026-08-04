@@ -27,7 +27,7 @@ export default function AdminMembersPage() {
 
   async function handleSave(payload) {
     if (editingMember) {
-      await api.put(`/members/${editingMember._id}`, payload);
+      await api.put(`/members?id=${editingMember._id}`, payload);
     } else {
       await api.post('/members', payload);
     }
@@ -36,13 +36,13 @@ export default function AdminMembersPage() {
   }
 
   async function handleDeleteConfirmed() {
-    await api.del(`/members/${deletingMember._id}`);
+    await api.del(`/members?id=${deletingMember._id}`);
     setDeletingMember(null);
     await reload();
   }
 
   async function handleLeadershipChange(divisionId, field, memberId) {
-    await api.put(`/divisions/${divisionId}`, { [field]: memberId || null });
+    await api.put(`/divisions?id=${divisionId}`, { [field]: memberId || null });
     await reload();
   }
 
